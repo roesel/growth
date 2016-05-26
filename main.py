@@ -40,7 +40,7 @@ def profile():
     
     p.strip_dirs().sort_stats('time').print_stats(10)
 
-main(50)
+main(25)
 #profile()
 
 

@@ -9,6 +9,7 @@ class Crystal:
         self.m = m
         self.n = n
         self.num_of_growths = 0
+        
         self.probabilities = [
             0.01,  # no NN
             0.1,  # 1 NN
@@ -24,6 +25,9 @@ class Crystal:
         else:
             raise ValueError('Wrong initial size of initial_grid.')
    
+        #Get a list of indices for an array of this shape        
+        self.deposition_order = list(np.ndindex(self.grid.shape))    
+   
     def print_grid(self):
         '''Prints current state of grid.'''
         print(self.grid)
@@ -33,13 +37,9 @@ class Crystal:
         Get a random permutation of all indices on grid.
         src: http://stackoverflow.com/questions/3891180/select-cells-randomly-from-numpy-array-without-replacement
         '''
-        #Get a list of indices for an array of this shape        
-        indices = list(np.ndindex(self.grid.shape))    
-        
         #Shuffle the indices in-place
-        np.random.shuffle(indices)
-        
-        return indices
+        np.random.shuffle(self.deposition_order)
+        return self.deposition_order
     
     def probability_of_deposition(self, coords):
         
