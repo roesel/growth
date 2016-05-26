@@ -11,8 +11,16 @@ class Crystal:
     def __init__(self, m, n, initial_grid = 0):
         self.m = m
         self.n = n
+        self.probabilities = [
+            0.001,  # no NN
+            0.2,  # 1 NN
+            0.3,
+            0.4,
+            0.5,   # 4 NN
+        ]        
+        
         if not isinstance(initial_grid, np.ndarray):
-            self.grid = np.zeros((m, n))
+            self.grid = np.zeros((m, n), dtype=np.int)
         elif initial_grid.shape == (m, n):
             self.grid = initial_grid
         else:
@@ -40,13 +48,7 @@ class Crystal:
         
         sites = self.get_number_of_sticky_NN(coords)
         # put dictionary outside of function for better performance        
-        return [
-            0.02,  # no NN
-            0.05,  # 1 NN
-            0.1,
-            0.15,
-            0.5,   # 4 NN
-        ][sites]        
+        return self.probabilities[sites]        
         #return 1
         
     def random(self):
@@ -82,10 +84,13 @@ class Crystal:
         for index in order:
             if self.random() < self.probability_of_deposition(index):
                 self.grid[index] += 1
+    
+    def get_grid(self):
+        return self.grid
         
-init = np.zeros((5,5))
-c = Crystal(5,5, initial_grid=init)
-num_of_growths = 100
+#init = np.zeros((5,5))
+c = Crystal(50,50)
+num_of_growths = 50
 
 
 c.print_grid()
@@ -94,9 +99,10 @@ for g in range(num_of_growths):
 c.print_grid()
 
 
+from mpl_toolkits.mplot3d import Axes3D
+import matplotlib.pyplot as plt
 
-
-
+plt.imshow(c.get_grid(), cmap=plt.get_cmap("YlOrBr"))
 
 
 
