@@ -11,8 +11,8 @@ class Crystal:
         self.num_of_growths = 0
         
         self.probabilities = [
-            0.01,  # no NN
-            0.1,  # 1 NN
+            0.001,  # no NN
+            0.4,  # 1 NN
             0.7,
             0.9,
             1,   # 4 NN
@@ -67,7 +67,7 @@ class Crystal:
     def get_random_tile(self):
         return (np.random.randint(self.m), np.random.randint(self.n))
 
-    def grow_layer(self):
+    def grow_layer2(self):
         order = self.get_deposition_order()  
         
         for index in order:
@@ -75,7 +75,7 @@ class Crystal:
                 self.grid[index] += 1
         self.num_of_growths += 1
         
-    def grow_layer2(self):
+    def grow_layer(self):
         for i in range(self.m*self.n):
             index = self.get_random_tile()
             if self.random() < self.probability_of_deposition(index):

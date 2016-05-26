@@ -24,10 +24,16 @@ def plot_crystal(c):
         
         
 def main(num_of_growths):
-    c = Crystal(100,100)       
+    
+    # stairs
+    k = np.repeat(np.arange(10), 5)
+    k = np.concatenate((k,k[::-1]))
+    j = np.tile(k, (100,1))
+
+    c = Crystal(100,100, initial_grid=j)       
     #c.print_grid()
     c.grow(num_of_growths)
-    c.print_grid()
+    #c.print_grid()
     
     plot_crystal(c)
 
@@ -40,7 +46,7 @@ def profile():
     
     p.strip_dirs().sort_stats('time').print_stats(10)
 
-main(25)
+main(50)
 #profile()
 
 
