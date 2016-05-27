@@ -12,9 +12,9 @@ class Crystal:
         
         self.probabilities = [
             0.001,  # no NN
-            0.4,  # 1 NN
+            0.6,  # 1 NN
             0.7,
-            0.9,
+            0.8,
             1,   # 4 NN
         ]        
         
@@ -27,7 +27,13 @@ class Crystal:
    
         #Get a list of indices for an array of this shape        
         self.deposition_order = list(np.ndindex(self.grid.shape))    
-   
+
+    def p(self, x):
+        return x**4
+    
+    def prob(self, num_s_NN):
+        return self.p(num_s_NN+1)/self.p(9)
+    
     def print_grid(self):
         '''Prints current state of grid.'''
         print(self.grid)
@@ -46,6 +52,7 @@ class Crystal:
         sites = self.get_number_of_sticky_NN(coords)
         # put dictionary outside of function for better performance        
         return self.probabilities[sites]        
+        #return self.prob(sites)        
         #return 1
         
     def random(self):
@@ -59,6 +66,10 @@ class Crystal:
         if self.get_value((coords[0]+1, coords[1]))>main_val: num_of_sticky_NN += 1            
         if self.get_value((coords[0], coords[1]-1))>main_val: num_of_sticky_NN += 1            
         if self.get_value((coords[0], coords[1]+1))>main_val: num_of_sticky_NN += 1            
+#        if self.get_value((coords[0]-1, coords[1]-1))>main_val: num_of_sticky_NN += 1            
+#        if self.get_value((coords[0]-1, coords[1]+1))>main_val: num_of_sticky_NN += 1            
+#        if self.get_value((coords[0]+1, coords[1]-1))>main_val: num_of_sticky_NN += 1            
+#        if self.get_value((coords[0]+1, coords[1]+1))>main_val: num_of_sticky_NN += 1            
         return num_of_sticky_NN
 
     def get_value(self, coords):
@@ -67,7 +78,7 @@ class Crystal:
     def get_random_tile(self):
         return (np.random.randint(self.m), np.random.randint(self.n))
 
-    def grow_layer2(self):
+    def grow_layer1(self):
         order = self.get_deposition_order()  
         
         for index in order:
