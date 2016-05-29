@@ -50,8 +50,12 @@ class Crystal:
     def probability_of_deposition(self, coords):
         
         sites = self.get_number_of_sticky_NN(coords)
+        factor=1
+        if sites==0:
+            height = self.get_value(coords)   
+            factor = self.height_prob[height-self.min]
         # put dictionary outside of function for better performance        
-        return self.probabilities[sites]        
+        return self.probabilities[sites] * factor       
         #return self.prob(sites)        
         #return 1
         
@@ -73,7 +77,7 @@ class Crystal:
         return num_of_sticky_NN
 
     def get_value(self, coords):
-        return self.grid[(coords[0]%self.m, coords[1]%self.n)]
+        return int(self.grid[(coords[0]%self.m, coords[1]%self.n)])
         
     def get_random_tile(self):
         return (np.random.randint(self.m), np.random.randint(self.n))
@@ -87,6 +91,10 @@ class Crystal:
         self.num_of_growths += 1
         
     def grow_layer(self):
+        self.max = np.amax(self.grid)
+        self.min = np.amin(self.grid)
+        self.height_prob = np.concatenate((np.linspace(0.001, 1, self.max-self.min), np.ones(10)))
+        
         for i in range(self.m*self.n):
             index = self.get_random_tile()
             if self.random() < self.probability_of_deposition(index):

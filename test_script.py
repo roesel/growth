@@ -17,7 +17,8 @@ import numpy as np
 #j = np.tile(k, (100,1))
 #print(j)
 
-k = np.concatenate((np.zeros(60), np.ones(80), np.zeros(60)) )
-mooster = np.tile(k, (200,1))
 
-grown = c.grid - mooster
+maxi = 6
+mini = 3
+
+print(np.concatenate((np.linspace(0.001, 1, maxi-mini), np.ones(10))))

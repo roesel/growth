@@ -23,18 +23,23 @@ def plot_crystal(c, num_figure=1):
     plt.colorbar(orientation='vertical')            
         
         
+def make_init(kind, x):
+    if kind=="step":
+        k = np.concatenate((np.zeros(int(0.4*x)), np.ones(int(0.2*x)), np.zeros(x-(int(0.4*x)+int(0.2*x)))) )
+        init = np.tile(k, (x,1))        
+        return x, init
+    elif kind=="stairs":
+        k = np.repeat(np.arange(10), (x/10/2))
+        k = np.concatenate((k,k[::-1]))
+        j = np.tile(k, (x,1))
+        return x, j
+           
+            
 def main(num_of_growths):
     
-#    # stairs
-#    k = np.repeat(np.arange(10), 5)
-#    k = np.concatenate((k,k[::-1]))
-#    j = np.tile(k, (100,1))    
-    
-    # step
-    k = np.concatenate((np.zeros(60), np.ones(80), np.zeros(60)) )
-    init = np.tile(k, (200,1))
+    x, init = make_init("step", 400)
 
-    c = Crystal(200,200, initial_grid=init.copy())       
+    c = Crystal(x, x, initial_grid=init.copy())       
         
     #c.print_grid()
     c.grow(num_of_growths)
@@ -44,7 +49,7 @@ def main(num_of_growths):
     
 
     
-    d = Crystal(200, 200, initial_grid=(c.grid-init))
+    d = Crystal(x, x, initial_grid=(c.grid-init))
     plot_crystal(d, 2)
 
 def profile():
@@ -56,7 +61,7 @@ def profile():
     
     p.strip_dirs().sort_stats('time').print_stats(10)
 
-main(40)
+main(80)
 #profile()
 
 
