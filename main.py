@@ -8,7 +8,7 @@ import numpy as np
 from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.pyplot as plt
 
-from crystal import *
+from crystal_spi import *
 
 def plot_crystal(c, num_figure=1):
     fig = plt.figure(num_figure)
@@ -24,7 +24,6 @@ def plot_crystal(c, num_figure=1):
         
         
 def plot_crystal_3d(c, num_figure=3):
-    from mpl_toolkits.mplot3d import Axes3D
     fig = plt.figure(num_figure)        
     ax = fig.add_subplot(111, projection='3d')
     x = range(c.m)
@@ -44,6 +43,11 @@ def make_init(kind, x):
         k = np.concatenate((k,k[::-1]))
         j = np.tile(k, (x,1))
         return x, j
+    elif kind=="plain":
+        k = np.zeros((x, x), dtype=np.int)
+        return x, k
+    elif kind=="screw":
+        k = np.zeros((x, x), dtype=np.float)
            
             
 def main(num_of_growths):
@@ -72,7 +76,7 @@ def profile():
     
     p.strip_dirs().sort_stats('time').print_stats(10)
 
-main(50)
+main(10)
 #profile()
 
 
