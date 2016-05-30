@@ -58,7 +58,7 @@ def make_init(kind, x):
             
 def main(num_of_growths):
     
-    x, init = make_init("screw", 100)
+    x, init = make_init("screw", 50)
 
     c = Crystal(x, x, initial_grid=init.copy())       
         
@@ -82,7 +82,7 @@ def profile():
     
     p.strip_dirs().sort_stats('time').print_stats(10)
 
-main(30)
+main(40)
 #profile()
 
 

@@ -31,8 +31,24 @@ class Crystal:
     def p(self, x):
         return x**4
     
-    def prob(self, num_s_NN):
+    def prob1(self, num_s_NN):
         return self.p(num_s_NN+1)/self.p(9)
+        
+    def prob2(self, num_s_NN):
+        return np.exp(num_s_NN)/np.exp(4)
+
+    def lower025(self, x):
+        z=50
+        t=0.25
+        if x>t:
+            return 1
+        else:
+            return np.exp(z*(x+(1-0.25)))/np.exp(z)        
+        
+    def prob(self, x):
+        x = x/4
+        base = np.arctan(30*(x-0.25))/(np.pi/2)*0.5+0.5
+        return base * self.lower025(x)
     
     def print_grid(self):
         '''Prints current state of grid.'''
@@ -60,8 +76,10 @@ class Crystal:
             #height = self.get_value(coords)  
             #factor = self.height_prob[height-self.min]
         # put dictionary outside of function for better performance        
-        return self.probabilities[sites] * factor       
-        #return self.prob(sites)        
+        #return self.probabilities[sites] * factor       
+        #if self.prob(sites) * factor > 0.02:
+        #    print("probability: ", self.prob(sites) * factor)
+        return self.prob(sites) * factor        
         #return 1
         
     def random(self):
@@ -71,20 +89,26 @@ class Crystal:
     def get_number_of_sticky_NN(self, coords):
         num_of_sticky_NN = 0
         main_val = self.get_value(coords)
-        if self.get_value((coords[0]-1, coords[1]))>main_val: num_of_sticky_NN += 1            
-        if self.get_value((coords[0]+1, coords[1]))>main_val: num_of_sticky_NN += 1            
-        if self.get_value((coords[0], coords[1]-1))>main_val: num_of_sticky_NN += 1            
-        if self.get_value((coords[0], coords[1]+1))>main_val: num_of_sticky_NN += 1            
-#        if self.get_value((coords[0]-1, coords[1]-1))>main_val: num_of_sticky_NN += 1            
-#        if self.get_value((coords[0]-1, coords[1]+1))>main_val: num_of_sticky_NN += 1            
-#        if self.get_value((coords[0]+1, coords[1]-1))>main_val: num_of_sticky_NN += 1            
-#        if self.get_value((coords[0]+1, coords[1]+1))>main_val: num_of_sticky_NN += 1            
+        m1 = self.get_value((coords[0]-1, coords[1])) - main_val
+        m2 = self.get_value((coords[0]+1, coords[1])) - main_val
+        m3 = self.get_value((coords[0], coords[1]-1)) - main_val
+        m4 = self.get_value((coords[0], coords[1]+1)) - main_val
+
+        self.ms = [m1, m2, m3, m4]
+        for m in self.ms:
+            if m>0: 
+                if m>1:          
+                    num_of_sticky_NN += 1            
+                else:
+                    num_of_sticky_NN += m
+        #if num_of_sticky_NN>1:
+        #    print("returning: ", num_of_sticky_NN)
         return num_of_sticky_NN
 
     def get_value2(self, coords):
         return int(self.grid[(coords[0]%self.m, coords[1]%self.n)])
         
-    def get_value(self, coords):
+    def get_value(self, coords):        
         x, y = coords
         if coords[0]==self.m: 
             x=self.m-1
@@ -95,7 +119,7 @@ class Crystal:
         if coords[1]<0:
             y=0
             
-        return int(self.grid[(x, y)])            
+        return self.grid[(x, y)]            
         
     def get_random_tile(self):
         return (np.random.randint(self.m), np.random.randint(self.n))

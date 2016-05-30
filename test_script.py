@@ -7,18 +7,16 @@ Created on Wed May 25 17:48:01 2016
 
 
 import numpy as np
+import matplotlib.pyplot as plt
 
-x=8
-k = np.linspace(0, 1, int(x/2))
-k2 = np.concatenate((k,k[::-1]))
-j = np.tile(k2, (int(x/2), 1))
-j2 = np.zeros((int(x/4),x))
-o = np.vstack((j2, j, j2))
-print(o)
-
-
-#l = np.concatenate((k, j))
-#m = np.tile(l, (int(x/2), 1))
-#n = np.zeros((x-int(x/2), x))
-#o = np.vstack((m, n))
-#print(o)
+from crystal_spi import *
+e = Crystal(100, 100)
+plt.figure(5)
+plt.clf()
+x = np.linspace(0, 4, 100)
+y = np.zeros(x.size)
+for i in range(x.size):
+    y[i] = e.prob(x[i])
+plt.plot(x, y)
+plt.xlim(0,4)
+plt.ylim(0,1)
