@@ -81,8 +81,21 @@ class Crystal:
 #        if self.get_value((coords[0]+1, coords[1]+1))>main_val: num_of_sticky_NN += 1            
         return num_of_sticky_NN
 
-    def get_value(self, coords):
+    def get_value2(self, coords):
         return int(self.grid[(coords[0]%self.m, coords[1]%self.n)])
+        
+    def get_value(self, coords):
+        x, y = coords
+        if coords[0]==self.m: 
+            x=self.m-1
+        if coords[0]<0:
+            x=0
+        if coords[1]==self.n: 
+            y=self.n-1
+        if coords[1]<0:
+            y=0
+            
+        return int(self.grid[(x, y)])            
         
     def get_random_tile(self):
         return (np.random.randint(self.m), np.random.randint(self.n))
