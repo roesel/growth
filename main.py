@@ -20,8 +20,22 @@ def plot_crystal(c, num_figure=1):
     #ax.patch.set_alpha(0)
     ax.set_title(str(c.grid.shape)+", "+str(c.num_of_growths)+" growths")
     ax.set_frame_on(False)
-    plt.colorbar(orientation='vertical')            
-        
+    plt.colorbar(orientation='vertical')  
+
+def plot_history(c, num_figure=4):
+    fig = plt.figure(num_figure)          
+    plt.clf()
+    i=1
+    for grid in c.history:    
+        ax = fig.add_subplot(2,5,i)
+        plt.imshow(grid, cmap=plt.get_cmap("YlOrBr"), interpolation='none')
+        ax.get_xaxis().set_visible(False)
+        ax.get_yaxis().set_visible(False)  
+        ax.set_frame_on(False)
+        ax.set_title(str(i*c.history_interval)+" growths")
+        i+=1
+    plt.suptitle("History of growth: "+str(c.grid.shape)+", "+str(c.num_of_growths)+" growths")    
+    
         
 def plot_crystal_3d(c, num_figure=3):
     fig = plt.figure(num_figure)        
@@ -58,7 +72,7 @@ def make_init(kind, x):
             
 def main(num_of_growths):
     
-    x, init = make_init("screw", 50)
+    x, init = make_init("screw", 100)
 
     c = Crystal(x, x, initial_grid=init.copy())       
         
@@ -72,6 +86,8 @@ def main(num_of_growths):
     
     d = Crystal(x, x, initial_grid=(c.grid-init))
     plot_crystal(d, 2)
+    
+    plot_history(c)
 
 def profile():
     import cProfile
@@ -82,7 +98,7 @@ def profile():
     
     p.strip_dirs().sort_stats('time').print_stats(10)
 
-main(40)
+main(100)
 #profile()
 
 

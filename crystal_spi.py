@@ -9,6 +9,8 @@ class Crystal:
         self.m = m
         self.n = n
         self.num_of_growths = 0
+        self.history = []
+        self.history_interval = 10
         
         self.probabilities = [
             0.001,  # no NN
@@ -46,7 +48,7 @@ class Crystal:
             return np.exp(z*(x+(1-0.25)))/np.exp(z)        
         
     def prob(self, x):
-        x = x/4
+        x = (x+0.04)/4
         base = np.arctan(30*(x-0.25))/(np.pi/2)*0.5+0.5
         return base * self.lower025(x)
     
@@ -73,6 +75,7 @@ class Crystal:
         factor=1
         if sites==0:
             factor = self.height_factor(coords)
+            #factor = 1
             #height = self.get_value(coords)  
             #factor = self.height_prob[height-self.min]
         # put dictionary outside of function for better performance        
@@ -141,8 +144,25 @@ class Crystal:
             index = self.get_random_tile()
             if self.random() < self.probability_of_deposition(index):
                 self.grid[index] += 1
+        
+        if self.num_of_growths%self.history_interval==0:
+            self.history.append(self.grid.copy())
         self.num_of_growths += 1
+        
     
     def grow(self, layers):
         for layers in range(layers):
             self.grow_layer()
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
