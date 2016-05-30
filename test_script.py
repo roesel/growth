@@ -6,21 +6,19 @@ Created on Wed May 25 17:48:01 2016
 """
 
 
-import numpy
-import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D
+import numpy as np
 
-# Set up grid and test data
-nx, ny = 256, 256
-x = range(nx)
-y = range(ny)
+x=8
+k = np.linspace(0, 1, int(x/2))
+k2 = np.concatenate((k,k[::-1]))
+j = np.tile(k2, (int(x/2), 1))
+j2 = np.zeros((int(x/4),x))
+o = np.vstack((j2, j, j2))
+print(o)
 
-data = numpy.random.random((nx, ny))
 
-hf = plt.figure()
-ha = hf.add_subplot(111, projection='3d')
-
-X, Y = numpy.meshgrid(x, y)  # `plot_surface` expects `x` and `y` data to be 2D
-ha.plot_surface(X, Y, data)
-
-plt.show()
+#l = np.concatenate((k, j))
+#m = np.tile(l, (int(x/2), 1))
+#n = np.zeros((x-int(x/2), x))
+#o = np.vstack((m, n))
+#print(o)

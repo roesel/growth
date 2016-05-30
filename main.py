@@ -47,12 +47,17 @@ def make_init(kind, x):
         k = np.zeros((x, x), dtype=np.int)
         return x, k
     elif kind=="screw":
-        k = np.zeros((x, x), dtype=np.float)
+        k = np.linspace(0, 1, int(x/2))
+        k2 = np.concatenate((k,k[::-1]))
+        j = np.tile(k2, (int(x/2), 1))
+        j2 = np.zeros((int(x/4),x))
+        o = np.vstack((j2, j, j2))
+        return x, o
            
             
 def main(num_of_growths):
     
-    x, init = make_init("step", 200)
+    x, init = make_init("screw", 200)
 
     c = Crystal(x, x, initial_grid=init.copy())       
         
@@ -76,7 +81,7 @@ def profile():
     
     p.strip_dirs().sort_stats('time').print_stats(10)
 
-main(10)
+main(50)
 #profile()
 
 
