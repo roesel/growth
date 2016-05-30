@@ -23,6 +23,17 @@ def plot_crystal(c, num_figure=1):
     plt.colorbar(orientation='vertical')            
         
         
+def plot_crystal_3d(c, num_figure=3):
+    from mpl_toolkits.mplot3d import Axes3D
+    fig = plt.figure(num_figure)        
+    ax = fig.add_subplot(111, projection='3d')
+    x = range(c.m)
+    y = range(c.n)
+    X, Y = np.meshgrid(x,y)
+    plt.xlim(0, c.m)
+    plt.ylim(0, c.n)
+    ax.plot_surface(X, Y, c.grid, rstride=1, cstride=1, antialiased=False)
+        
 def make_init(kind, x):
     if kind=="step":
         k = np.concatenate((np.zeros(int(0.4*x)), np.ones(int(0.2*x)), np.zeros(x-(int(0.4*x)+int(0.2*x)))) )
@@ -37,7 +48,7 @@ def make_init(kind, x):
             
 def main(num_of_growths):
     
-    x, init = make_init("step", 400)
+    x, init = make_init("step", 200)
 
     c = Crystal(x, x, initial_grid=init.copy())       
         
@@ -61,7 +72,7 @@ def profile():
     
     p.strip_dirs().sort_stats('time').print_stats(10)
 
-main(80)
+main(50)
 #profile()
 
 

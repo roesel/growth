@@ -4,21 +4,23 @@ Created on Wed May 25 17:48:01 2016
 
 @author: roese
 """
-import numpy as np
-## stairs
-#k = np.repeat(np.arange(5), 5)
-#k = np.concatenate((k,k[::-1]))
-#j = np.tile(k, (50,1))
-#print(j)
-
-#
-## step
-#k = np.concatenate((np.zeros(35), np.ones(30), np.zeros(35)) )
-#j = np.tile(k, (100,1))
-#print(j)
 
 
-maxi = 6
-mini = 3
+import numpy
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
 
-print(np.concatenate((np.linspace(0.001, 1, maxi-mini), np.ones(10))))
+# Set up grid and test data
+nx, ny = 256, 256
+x = range(nx)
+y = range(ny)
+
+data = numpy.random.random((nx, ny))
+
+hf = plt.figure()
+ha = hf.add_subplot(111, projection='3d')
+
+X, Y = numpy.meshgrid(x, y)  # `plot_surface` expects `x` and `y` data to be 2D
+ha.plot_surface(X, Y, data)
+
+plt.show()
