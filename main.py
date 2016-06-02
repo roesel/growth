@@ -14,13 +14,14 @@ def plot_crystal(c, num_figure=1):
     fig = plt.figure(num_figure)
     plt.clf()
     ax = fig.add_subplot(111)
-    plt.imshow(c.grid, cmap=plt.get_cmap("YlOrBr"), interpolation='none')
+    plt.imshow(c.grid, cmap=plt.get_cmap("viridis"), interpolation='none', vmin=0)
     ax.get_xaxis().set_visible(False)
     ax.get_yaxis().set_visible(False)
     #ax.patch.set_alpha(0)
     ax.set_title(str(c.grid.shape)+", "+str(c.num_of_growths)+" growths")
     ax.set_frame_on(False)
-    plt.colorbar(orientation='vertical')  
+    cbar = plt.colorbar(orientation='vertical')  
+    cbar.set_ticks(np.arange(3+1))
 
 def plot_history(c, num_figure=4):
     fig = plt.figure(num_figure)          
@@ -28,7 +29,7 @@ def plot_history(c, num_figure=4):
     i=1
     for grid in c.history:    
         ax = fig.add_subplot(2,5,i)
-        plt.imshow(grid, cmap=plt.get_cmap("YlOrBr"), interpolation='none')
+        plt.imshow(grid, cmap=plt.get_cmap("viridis"), interpolation='none', vmin=0)
         ax.get_xaxis().set_visible(False)
         ax.get_yaxis().set_visible(False)  
         ax.set_frame_on(False)
