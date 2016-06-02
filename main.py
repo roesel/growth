@@ -48,7 +48,7 @@ def plot_history(c, num_figure=4):
         ax.get_xaxis().set_visible(False)
         ax.get_yaxis().set_visible(False)  
         ax.set_frame_on(False)
-        ax.set_title(str(i*c.history_interval)+" growths")
+        ax.set_title(str(c.history_growths[i-1])+" growths")
         i+=1
     plt.suptitle("History of growth: "+str(c.grid.shape)+", "+str(c.num_of_growths)+" growths")    
     
@@ -67,6 +67,7 @@ def plot_crystal_3d(c, num_figure=3):
         
 def make_init(kind, x):
     ''' Create different initial states of crystal surface. '''
+    
     if kind=="step":
         # A column of value 1 surrounded by values 0 from both sides
         k = np.concatenate((np.zeros(int(0.4*x)), np.ones(int(0.2*x)), np.zeros(x-(int(0.4*x)+int(0.2*x)))) )

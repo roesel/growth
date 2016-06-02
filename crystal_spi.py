@@ -10,6 +10,7 @@ class Crystal:
         self.n = n
         self.num_of_growths = 0
         self.history = []
+        self.history_growths = []
         self.history_interval = 10
         
         self.probabilities = [
@@ -147,9 +148,10 @@ class Crystal:
             if self.random() < self.probability_of_deposition(index):
                 self.grid[index] += 1
         
+        self.num_of_growths += 1
         if self.num_of_growths%self.history_interval==0:
             self.history.append(self.grid.copy())
-        self.num_of_growths += 1
+            self.history_growths.append(self.num_of_growths)
         
         self.max = np.amax(self.grid)
         self.min = np.amin(self.grid)
