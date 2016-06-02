@@ -4,6 +4,7 @@
 """
 
 import numpy as np
+import math
 
 from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.pyplot as plt
@@ -11,17 +12,20 @@ import matplotlib.pyplot as plt
 from crystal_spi import *
 
 def plot_crystal(c, num_figure=1):
+    max_int = math.ceil(c.max)    
+    
     fig = plt.figure(num_figure)
     plt.clf()
     ax = fig.add_subplot(111)
-    plt.imshow(c.grid, cmap=plt.get_cmap("viridis"), interpolation='none', vmin=0)
+    plt.imshow(c.grid, cmap=plt.get_cmap("viridis"), interpolation='none', vmin=0, vmax=max_int)
     ax.get_xaxis().set_visible(False)
     ax.get_yaxis().set_visible(False)
     #ax.patch.set_alpha(0)
     ax.set_title(str(c.grid.shape)+", "+str(c.num_of_growths)+" growths")
     ax.set_frame_on(False)
     cbar = plt.colorbar(orientation='vertical')  
-    cbar.set_ticks(np.arange(3+1))
+    cbar.set_ticks(np.arange(max_int+1))
+    print(c.max)
 
 def plot_history(c, num_figure=4):
     fig = plt.figure(num_figure)          

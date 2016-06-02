@@ -29,6 +29,9 @@ class Crystal:
    
         #Get a list of indices for an array of this shape        
         self.deposition_order = list(np.ndindex(self.grid.shape))    
+        
+        self.max = np.amax(self.grid)
+        self.min = np.amin(self.grid)
 
     def p(self, x):
         return x**4
@@ -136,8 +139,7 @@ class Crystal:
         self.num_of_growths += 1
         
     def grow_layer(self):
-        self.max = np.amax(self.grid)
-        self.min = np.amin(self.grid)
+        
         self.height_prob = np.concatenate((np.linspace(0.001, 1, self.max-self.min), np.ones(10)))
         
         for i in range(self.m*self.n):
@@ -148,6 +150,9 @@ class Crystal:
         if self.num_of_growths%self.history_interval==0:
             self.history.append(self.grid.copy())
         self.num_of_growths += 1
+        
+        self.max = np.amax(self.grid)
+        self.min = np.amin(self.grid)
         
     
     def grow(self, layers):
