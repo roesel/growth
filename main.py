@@ -99,21 +99,21 @@ def main(num_of_growths):
     
     # Main simulation crystal, x is dimensions (m=n=x)
     
-    # Step    
-    x, init = make_init("step", 100)
-    c = Crystal(x, x, initial_grid=init.copy(), mode="step")       
-    #c.print_grid()
-    c.grow(num_of_growths)
-    #c.print_grid()
-    plot_crystal(c)
-    
-#    # Screw
-#    x, init = make_init("screw", 100)
-#    c = Crystal(x, x, initial_grid=init.copy(), mode="spin")       
+#    # Step    
+#    x, init = make_init("step", 100)
+#    c = Crystal(x, x, initial_grid=init.copy(), mode="step", hist_int=3)       
 #    #c.print_grid()
 #    c.grow(num_of_growths)
 #    #c.print_grid()
 #    plot_crystal(c)
+    
+    # Screw
+    x, init = make_init("screw", 100)
+    c = Crystal(x, x, initial_grid=init.copy(), mode="spin")       
+    #c.print_grid()
+    c.grow(num_of_growths)
+    #c.print_grid()
+    plot_crystal(c)
     
     # A crystal object serving to visualize only "what grew" without init state   
     d = Crystal(x, x, initial_grid=(c.grid-init))
@@ -131,7 +131,7 @@ def profile():
     p = Stats('pstats')
     p.strip_dirs().sort_stats('time').print_stats(10)
 
-main(30)
+main(100)
 #profile()
 
 

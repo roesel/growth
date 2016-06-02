@@ -45,32 +45,37 @@ class Crystal:
     def prob2(self, num_s_NN):
         return np.exp(num_s_NN)/np.exp(4)
 
-    def lower025(self, x):
+    def prob_spin(self, x):
         z=50
         t=0.25
+        x = (x+0.04)/4        
         if x>t:
-            return 1
+            lower = 1
         else:
-            return np.exp(z*(x+(1-0.25)))/np.exp(z)        
+            lower = np.exp(z*(x+(1-0.25)))/np.exp(z)                        
+        base = np.arctan(30*(x-0.25))/(np.pi/2)*0.5+0.5
+        return base * lower
         
+    def prob_step(self, x):
+        z=50
+        t=0.25
+        x = (x+0.04)/4
+        if x>t:
+            return 0.6*np.exp((x-0.25)/1.5)
+        else:
+            lower = np.exp(z*(x+(1-0.25)))/np.exp(z)
+            base = np.arctan(30*(x-0.25))/(np.pi/2)*0.5+0.5
+            return base * lower + 0.001   
+    
     def prob(self, x):
         if self.mode == "spin":
-            x = (x+0.04)/4
-            base = np.arctan(30*(x-0.25))/(np.pi/2)*0.5+0.5
-            return base * self.lower025(x)
+            return self.prob_spin(x)
         elif self.mode == "step":
-            
-            # (!!!!!!!!!!)
-            # This should be converted into a function without a loss of output
-            # (!!!!!!!!!!)
-
-            return self.probabilities[int(x)]
+            return self.prob_step(x)
     
     def print_grid(self):
         '''Prints current state of grid.'''
         print(self.grid)
-
-    
         
     def height_factor(self, coords):
         if self.mode == "spin":
