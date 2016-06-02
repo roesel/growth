@@ -5,7 +5,8 @@ import numpy as np
 class Crystal:
     '''Class representing one growth chamber/surface/crystal.'''
    
-    def __init__(self, m, n, initial_grid = 0, mode="step", hist_int=10):
+    def __init__(self, m, n, initial_grid = 0, mode="step", hist_int=10, \
+                 border_policy="loop"):
         self.m = m
         self.n = n
         self.mode = mode
@@ -13,14 +14,9 @@ class Crystal:
         self.history = []
         self.history_growths = []
         self.history_interval = hist_int
+        self.border_policy = border_policy
         
-        self.probabilities = [
-            0.001,  # no NN
-            0.6,  # 1 NN
-            0.7,
-            0.8,
-            1,   # 4 NN
-        ]        
+
         
         if not isinstance(initial_grid, np.ndarray):
             self.grid = np.zeros((m, n), dtype=np.int)
@@ -34,16 +30,15 @@ class Crystal:
         
         # --- DEPRECATED ------
         ## Get a list of indices for an array of this shape        
-        #self.deposition_order = list(np.ndindex(self.grid.shape))    
-
-    def p(self, x):
-        return x**4
-    
-    def prob1(self, num_s_NN):
-        return self.p(num_s_NN+1)/self.p(9)
+        #self.deposition_order = list(np.ndindex(self.grid.shape))  
         
-    def prob2(self, num_s_NN):
-        return np.exp(num_s_NN)/np.exp(4)
+#        self.probabilities = [
+#            0.001,  # no NN
+#            0.6,  # 1 NN
+#            0.7,
+#            0.8,
+#            1,   # 4 NN
+#        ]        
 
     def prob_spin(self, x):
         z=50
@@ -121,21 +116,21 @@ class Crystal:
                     
         return num_of_sticky_NN
 
-    def get_value2(self, coords):
-        return int(self.grid[(coords[0]%self.m, coords[1]%self.n)])
-        
-    def get_value(self, coords):        
-        x, y = coords
-        if coords[0]==self.m: 
-            x=self.m-1
-        if coords[0]<0:
-            x=0
-        if coords[1]==self.n: 
-            y=self.n-1
-        if coords[1]<0:
-            y=0
+    def get_value(self, coords): 
+        if self.border_policy=="flex":
+            x, y = coords
+            if coords[0]==self.m: 
+                x=self.m-1
+            if coords[0]<0:
+                x=0
+            if coords[1]==self.n: 
+                y=self.n-1
+            if coords[1]<0:
+                y=0
+            return self.grid[(x, y)]  
             
-        return self.grid[(x, y)]            
+        elif self.border_policy=="loop":
+            return int(self.grid[(coords[0]%self.m, coords[1]%self.n)])
         
     def get_random_tile(self):
         return (np.random.randint(self.m), np.random.randint(self.n))
