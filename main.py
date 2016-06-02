@@ -98,12 +98,20 @@ def main(num_of_growths):
     ''' Main method to start simulation. '''
     
     # Main simulation crystal, x is dimensions (m=n=x)
-    x, init = make_init("screw", 100)
+    x, init = make_init("step", 100)
     c = Crystal(x, x, initial_grid=init.copy())       
     #c.print_grid()
     c.grow(num_of_growths)
     #c.print_grid()
     plot_crystal(c)
+    
+#    # Screw
+#    x, init = make_init("screw", 100)
+#    c = Crystal(x, x, initial_grid=init.copy())       
+#    #c.print_grid()
+#    c.grow(num_of_growths)
+#    #c.print_grid()
+#    plot_crystal(c)
     
     # A crystal object serving to visualize only "what grew" without init state   
     d = Crystal(x, x, initial_grid=(c.grid-init))

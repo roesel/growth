@@ -69,11 +69,7 @@ class Crystal:
         if self.get_value((coords[0]-1, coords[1]))>main_val: num_of_sticky_NN += 1            
         if self.get_value((coords[0]+1, coords[1]))>main_val: num_of_sticky_NN += 1            
         if self.get_value((coords[0], coords[1]-1))>main_val: num_of_sticky_NN += 1            
-        if self.get_value((coords[0], coords[1]+1))>main_val: num_of_sticky_NN += 1            
-#        if self.get_value((coords[0]-1, coords[1]-1))>main_val: num_of_sticky_NN += 1            
-#        if self.get_value((coords[0]-1, coords[1]+1))>main_val: num_of_sticky_NN += 1            
-#        if self.get_value((coords[0]+1, coords[1]-1))>main_val: num_of_sticky_NN += 1            
-#        if self.get_value((coords[0]+1, coords[1]+1))>main_val: num_of_sticky_NN += 1            
+        if self.get_value((coords[0], coords[1]+1))>main_val: num_of_sticky_NN += 1                
         return num_of_sticky_NN
 
     def get_value(self, coords):

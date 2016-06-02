@@ -78,15 +78,17 @@ class Crystal:
         sites = self.get_number_of_sticky_NN(coords)
         factor=1
         if sites==0:
-            factor = self.height_factor(coords)
+            #factor = self.height_factor(coords)
             #factor = 1
-            #height = self.get_value(coords)  
-            #factor = self.height_prob[height-self.min]
-        # put dictionary outside of function for better performance        
-        #return self.probabilities[sites] * factor       
+            height = self.get_value(coords)  
+            factor = self.height_prob[height-self.min]
+        # put dictionary outside of function for better performance 
+        if (sites-int(sites)==0):
+            sites = int(sites)            
+        return self.probabilities[sites] * factor       
         #if self.prob(sites) * factor > 0.02:
         #    print("probability: ", self.prob(sites) * factor)
-        return self.prob(sites) * factor        
+        #return self.prob(sites) * factor        
         #return 1
         
     def random(self):
