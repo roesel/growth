@@ -1,0 +1,7 @@
+=== TODO ===
+
+  * convert step probabilities to function
+  * define a "plot_probabilities" function
+  * define amount and frequency of history in init()
+  * make starter scripts for growths
+  
