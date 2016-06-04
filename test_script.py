@@ -6,33 +6,6 @@ Created on Wed May 25 17:48:01 2016
 """
 
 
-import numpy as np
-import matplotlib.pyplot as plt
-
-from crystal import *
-from plot_init_tools import *
-
-           
-x=200
-x, init = make_init("plain", x)
-plain = Crystal(x, x, initial_grid=init.copy())
-x, init = make_init("stairs", x)
-stairs = Crystal(x, x, initial_grid=init.copy())
-x, init = make_init("step", 100)
-step = Crystal(x, x, initial_grid=init.copy())
-x, init = make_init("screw", 100)
-screw = Crystal(x, x, initial_grid=init.copy())
-
-  
-plt.figure(7)
-plt.clf()
-
-plt.subplot(141)  
-plot_crystat(plain)
-
-plt.tight_layout()
-plt.savefig('C:\\BTSync\\Skola\\UW_2016_ST\\NANO701_MBE\\plots\\inits.png')
-
 #def prob(x):
 #    z=50
 #    t=0.25
