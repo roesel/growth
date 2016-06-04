@@ -75,7 +75,8 @@ def make_init(kind, x):
         return x, init
     elif kind=="stairs":
         # Stairs stepping up one atomic level at a time
-        k = np.repeat(np.arange(10), (x/10/2))
+        num_of_stairs = 5
+        k = np.repeat(np.arange(num_of_stairs), (x/num_of_stairs/2))
         k = np.concatenate((k,k[::-1]))
         j = np.tile(k, (x,1))
         return x, j
@@ -99,23 +100,33 @@ def main(num_of_growths):
     
     # Main simulation crystal, x is dimensions (m=n=x)
     
-    # Step    
-    x, init = make_init("step", 100)
-    c = Crystal(x, x, initial_grid=init.copy(), mode="step", hist_int=4, \
-                border_policy="loop")       
-    #c.print_grid()
-    c.grow(num_of_growths)
-    #c.print_grid()
-    plot_crystal(c)
-    
-#    # Screw
-#    x, init = make_init("screw", 100)
-#    c = Crystal(x, x, initial_grid=init.copy(), mode="spin", \
-#                border_policy="flex")       
+#    # Stairs    
+#    x, init = make_init("stairs", 100)
+#    c = Crystal(x, x, initial_grid=init.copy(), mode="step", hist_int=2, \
+#                border_policy="loop", use_height=False)       
 #    #c.print_grid()
 #    c.grow(num_of_growths)
 #    #c.print_grid()
 #    plot_crystal(c)
+    
+    
+#    # Step    
+#    x, init = make_init("step", 100)
+#    c = Crystal(x, x, initial_grid=init.copy(), mode="step", hist_int=4, \
+#                border_policy="loop")       
+#    #c.print_grid()
+#    c.grow(num_of_growths)
+#    #c.print_grid()
+#    plot_crystal(c)
+    
+    # Screw
+    x, init = make_init("screw", 100)
+    c = Crystal(x, x, initial_grid=init.copy(), mode="spin", \
+                border_policy="flex")       
+    #c.print_grid()
+    c.grow(num_of_growths)
+    #c.print_grid()
+    plot_crystal(c)
     
     # A crystal object serving to visualize only "what grew" without init state   
     d = Crystal(x, x, initial_grid=(c.grid-init))
@@ -133,7 +144,7 @@ def profile():
     p = Stats('pstats')
     p.strip_dirs().sort_stats('time').print_stats(10)
 
-main(40)
+main(100)
 #profile()
 
 

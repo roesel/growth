@@ -6,7 +6,7 @@ class Crystal:
     '''Class representing one growth chamber/surface/crystal.'''
    
     def __init__(self, m, n, initial_grid = 0, mode="step", hist_int=10, \
-                 border_policy="loop"):
+                 border_policy="loop", use_height=True):
         self.m = m
         self.n = n
         self.mode = mode
@@ -15,8 +15,7 @@ class Crystal:
         self.history_growths = []
         self.history_interval = hist_int
         self.border_policy = border_policy
-        
-
+        self.use_height = use_height
         
         if not isinstance(initial_grid, np.ndarray):
             self.grid = np.zeros((m, n), dtype=np.int)
@@ -67,10 +66,6 @@ class Crystal:
             return self.prob_spin(x)
         elif self.mode == "step":
             return self.prob_step(x)
-    
-    def print_grid(self):
-        '''Prints current state of grid.'''
-        print(self.grid)
         
     def height_factor(self, coords):
         if self.mode == "spin":
@@ -89,15 +84,15 @@ class Crystal:
         
         sites = self.get_number_of_sticky_NN(coords)
         factor=1
-        if sites==0:
-            factor = self.height_factor(coords)
+        
+        if (sites==0):
+            if not self.use_height:
+                factor=0.001            
+            else:        
+                factor = self.height_factor(coords)
         
         return self.prob(sites) * factor   
         
-    def random(self):
-        ''' Returns random number from continuous uniform distribution. '''
-        return np.random.random_sample()
-    
     def get_number_of_sticky_NN(self, coords):
         num_of_sticky_NN = 0
         main_val = self.get_value(coords)
@@ -131,6 +126,10 @@ class Crystal:
             
         elif self.border_policy=="loop":
             return int(self.grid[(coords[0]%self.m, coords[1]%self.n)])
+            
+    def random(self):
+        ''' Returns random number from continuous uniform distribution. '''
+        return np.random.random_sample()
         
     def get_random_tile(self):
         return (np.random.randint(self.m), np.random.randint(self.n))
@@ -151,11 +150,14 @@ class Crystal:
         
         self.max = np.amax(self.grid)
         self.min = np.amin(self.grid)
-        
     
     def grow(self, layers):
         for layers in range(layers):
             self.grow_layer()
+                
+    def print_grid(self):
+        '''Prints current state of grid.'''
+        print(self.grid)
 
     # --- DEPRECATED --------------
             
