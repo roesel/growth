@@ -1,18 +1,11 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Sat Jun  4 14:05:45 2016
-
-@author: roese
-"""
-
+''' A script used to generate a list of available initial states.'''
 import numpy as np
 import matplotlib.pyplot as plt
 
 from crystal import *
 from plot_init_tools import *
-
-
-           
+    
 x=200
 x, init = make_init("plain", x)
 plain = Crystal(x, x, initial_grid=init.copy())
@@ -51,5 +44,5 @@ for cg in cs:
     cbar = plt.colorbar(orientation='vertical')  
     cbar.set_ticks(np.arange(max_int+1))
 
-plt.tight_layout()
-plt.savefig('C:\\BTSync\\Skola\\UW_2016_ST\\NANO701_MBE\\plots\\inits.png')
+#plt.tight_layout()
+#plt.savefig('')

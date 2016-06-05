@@ -1,5 +1,0 @@
-=== TODO ===
-
-  * define a "plot_probabilities" function
-  * make starter scripts for growths
-  

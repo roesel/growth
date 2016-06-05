@@ -1,9 +1,5 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Sat Jun  4 13:44:52 2016
-
-@author: roese
-"""
+''' Tools for plotting crystals and generating initial states. '''
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib as mpl
@@ -52,6 +48,7 @@ def plot_history(c, num_figure=4):
     plt.suptitle("History of growth: "+str(c.grid.shape)+", "+str(c.num_of_growths)+" growths")    
 
 def plot_out(c, num_figure=8, name=""):
+    ''' Creates a publishable evolution plot. '''
     # Determining top range of colorbar
     max_int = math.ceil(c.max)       
     

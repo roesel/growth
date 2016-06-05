@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-
+''' The object representing one crystal as it evolves during the simulation. '''
 import numpy as np
 
 class Crystal:
@@ -26,20 +26,9 @@ class Crystal:
    
         self.max = np.amax(self.grid)
         self.min = np.amin(self.grid)
-        
-        # --- DEPRECATED ------
-        ## Get a list of indices for an array of this shape        
-        #self.deposition_order = list(np.ndindex(self.grid.shape))  
-        
-#        self.probabilities = [
-#            0.001,  # no NN
-#            0.6,  # 1 NN
-#            0.7,
-#            0.8,
-#            1,   # 4 NN
-#        ]        
 
     def prob_spin(self, x):
+        ''' Probability function for spiral growth. '''
         z=50
         t=0.25
         x = (x+0.04)/4        
@@ -51,6 +40,7 @@ class Crystal:
         return base * lower
         
     def prob_step(self, x):
+        ''' Probability function for step growth. '''
         z=50
         t=0.25
         x = (x+0.04)/4
@@ -62,12 +52,14 @@ class Crystal:
             return base * lower + 0.001   
     
     def prob(self, x):
+        ''' Probability function filler for spiral/step growths. '''
         if self.mode == "spin":
             return self.prob_spin(x)
         elif self.mode == "step":
             return self.prob_step(x)
         
     def height_factor(self, coords):
+        ''' Height factor function for spiral/step growths. '''
         if self.mode == "spin":
             height = self.get_value(coords)         
             return (height-self.min)/(self.max-self.min)        
@@ -76,7 +68,7 @@ class Crystal:
             return self.height_prob[height-self.min]
         
     def probability_of_deposition(self, coords):
-        
+        ''' Probability of deposition semi-filler for any approach. '''
         # (!!!!!!!!!!)
         # This could be separated between "spin" and "step" even one layer 
         # earlier by making prob_of_deposition() mode dependent.
@@ -94,6 +86,10 @@ class Crystal:
         return self.prob(sites) * factor   
         
     def get_number_of_sticky_NN(self, coords):
+        ''' Returns the number of nearest neighbors of a specific site. 
+            Can return float (area of contact in a**3)
+        '''
+        
         num_of_sticky_NN = 0
         main_val = self.get_value(coords)
         m1 = self.get_value((coords[0]-1, coords[1])) - main_val
@@ -112,6 +108,7 @@ class Crystal:
         return num_of_sticky_NN
 
     def get_value(self, coords): 
+        ''' Gets values of specific coords, implements different border policies. '''
         if self.border_policy=="flex":
             x, y = coords
             if coords[0]==self.m: 
@@ -132,10 +129,11 @@ class Crystal:
         return np.random.random_sample()
         
     def get_random_tile(self):
+        ''' Returns random coordinates from field. '''
         return (np.random.randint(self.m), np.random.randint(self.n))
 
     def grow_layer(self):
-        
+        ''' Attempts to land (m x n) atoms. '''
         self.height_prob = np.concatenate((np.linspace(0.001, 1, self.max-self.min), np.ones(10)))
         
         for i in range(self.m*self.n):
@@ -152,6 +150,7 @@ class Crystal:
         self.min = np.amin(self.grid)
     
     def grow(self, layers):
+        ''' Executes 'layers' of growths. '''
         for layers in range(layers):
             self.grow_layer()
                 
@@ -159,32 +158,6 @@ class Crystal:
         '''Prints current state of grid.'''
         print(self.grid)
 
-    # --- DEPRECATED --------------
-            
-    def get_deposition_order(self):
-        '''
-        Get a random permutation of all indices on grid.
-        src: http://stackoverflow.com/questions/3891180/select-cells-randomly-from-numpy-array-without-replacement
-        '''
-        #Shuffle the indices in-place
-        np.random.shuffle(self.deposition_order)
-        return self.deposition_order            
-
-    def grow_layer1(self):
-        order = self.get_deposition_order()  
-        
-        for index in order:
-            if self.random() < self.probability_of_deposition(index):
-                self.grid[index] += 1
-        self.num_of_growths += 1            
-            
-            
-            
-            
-            
-            
-            
-            
             
             
             

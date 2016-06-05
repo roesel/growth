@@ -1,10 +1,5 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Sat Jun  4 13:30:51 2016
-
-@author: roese
-"""
-
+''' Plots used probabilities for step and spiral growth. '''
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -39,5 +34,5 @@ plt.title("b) spiral growth")
 plt.xlim(0,4)
 plt.ylim(0,1)
 
-plt.tight_layout()
-plt.savefig('C:\\BTSync\\Skola\\UW_2016_ST\\NANO701_MBE\\plots\\p_step_and_spin.png')
+#plt.tight_layout()
+#plt.savefig('')
