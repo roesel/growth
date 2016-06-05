@@ -6,6 +6,7 @@ Created on Sat Jun  4 13:44:52 2016
 """
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib as mpl
 import math
 from mpl_toolkits.mplot3d import Axes3D
 
@@ -49,7 +50,25 @@ def plot_history(c, num_figure=4):
         ax.set_title(str(c.history_growths[i-1])+" growths")
         i+=1
     plt.suptitle("History of growth: "+str(c.grid.shape)+", "+str(c.num_of_growths)+" growths")    
+
+def plot_out(c, num_figure=8, name=""):
+    # Determining top range of colorbar
+    max_int = math.ceil(c.max)       
     
+    fig, axes = plt.subplots(nrows=2, ncols=4, sharex=True, sharey=True, num=num_figure)
+    i = 0    
+    for ax in axes.flat:
+        im = ax.imshow(c.history[i], cmap=plt.get_cmap("viridis"), interpolation='none', vmin=0, vmax=max_int)
+        ax.get_xaxis().set_visible(False)
+        ax.get_yaxis().set_visible(False)  
+        ax.set_frame_on(False)
+        ax.set_title(str(c.history_growths[i])+" growths")
+        i+=1
+    cax,kw = mpl.colorbar.make_axes([ax for ax in axes.flat])
+    cbr = plt.colorbar(im, cax=cax, **kw)
+    cbr.set_ticks(np.arange(max_int+1))
+    #plt.tight_layout()
+    plt.show()
         
 def plot_crystal_3d(c, num_figure=3):
     ''' Plotting 3D plot of crystal. '''    
